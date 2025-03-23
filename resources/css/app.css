@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles pour le bouton ascenseur */
+.elevator-button {
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.elevator-button:hover {
+    transform: translateY(-5px);
+}
+
+.elevator-button.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.elevator-button.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.elevator-icon-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.elevator-icon {
+    transition: transform 0.8s ease;
+}
+
+.elevator-doors {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    pointer-events: none;
+}
+
+.elevator-door-left,
+.elevator-door-right {
+    width: 50%;
+    height: 100%;
+    background-color: #ffffff;
+    transition: transform 0.8s ease;
+}
+
+.elevator-door-left {
+    transform-origin: left;
+}
+
+.elevator-door-right {
+    transform-origin: right;
+}
+
+.elevator-button.animating .elevator-door-left {
+    transform: translateX(-100%);
+}
+
+.elevator-button.animating .elevator-door-right {
+    transform: translateX(100%);
+}
+
+/* Animation de l'ascenseur pendant le défilement */
+.elevator-button.scrolling .elevator-icon {
+    animation: elevatorMoving 1.2s infinite alternate;
+}
+
+@keyframes elevatorMoving {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-4px);
+    }
+}
+
+/* Animation finale quand on arrive en haut */
+.elevator-button.arrived {
+    animation: elevatorArrived 0.8s;
+}
+
+@keyframes elevatorArrived {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
