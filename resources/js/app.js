@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elevatorButton = document.getElementById('elevator-button');
     
     if (elevatorButton) {
-        // Afficher le bouton après avoir défilé de 200px
+        // Afficher le bouton après avoir défilé de 500px
         window.addEventListener('scroll', () => {
             if (window.scrollY > 500) {
                 elevatorButton.classList.remove('hidden');
@@ -24,32 +24,28 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Animation ascenseur et défilement vers le haut
         elevatorButton.addEventListener('click', () => {
-            // Animation des portes qui s'ouvrent
             elevatorButton.classList.add('animating');
-            
-            // Son "ding" (optionnel, ajoutez-le si vous le souhaitez)
-            // const dingSound = new Audio('/sounds/ding.mp3');
-            // dingSound.play();
-            
-            // Ajouter la classe pour animer l'ascenseur pendant le défilement
             elevatorButton.classList.add('scrolling');
             
             // Animation de défilement fluide vers le haut
             const scrollToTop = () => {
                 const currentPosition = document.documentElement.scrollTop || document.body.scrollTop;
                 
-                if (currentPosition > 0) {
+                if (currentPosition > 5) {
+                    const newPosition = currentPosition - Math.max(currentPosition / 15, 1);
+                    window.scrollTo(0, newPosition);
                     window.requestAnimationFrame(scrollToTop);
-                    window.scrollTo(0, currentPosition - currentPosition / 15); // Ralenti (diviseur plus grand)
                 } else {
+                    // Force la position exacte à 0
+                    window.scrollTo(0, 0);
+                    
                     // Animation d'arrivée
                     elevatorButton.classList.remove('scrolling');
                     elevatorButton.classList.add('arrived');
                     
-                    // Fermeture des portes après arrivée
                     setTimeout(() => {
                         elevatorButton.classList.remove('animating', 'arrived');
-                    }, 1200); // Plus long pour la fermeture des portes
+                    }, 1200);
                 }
             };
             

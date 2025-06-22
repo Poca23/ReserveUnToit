@@ -64,7 +64,6 @@
     transform: translateX(100%);
 }
 
-/* Animation de l'ascenseur pendant le défilement */
 .elevator-button.scrolling .elevator-icon {
     animation: elevatorMoving 1.2s infinite alternate;
 }
@@ -78,7 +77,6 @@
     }
 }
 
-/* Animation finale quand on arrive en haut */
 .elevator-button.arrived {
     animation: elevatorArrived 0.8s;
 }
