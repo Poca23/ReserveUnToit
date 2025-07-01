@@ -18,9 +18,12 @@ class BookingResource extends Resource
     protected static ?string $model = Booking::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
-    
+
     protected static ?string $navigationLabel = 'Réservations';
-    
+
+    protected static ?string $breadcrumb = 'Réservations';
+
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -34,24 +37,24 @@ class BookingResource extends Resource
                             ->relationship('user', 'name')
                             ->required()
                             ->searchable(),
-                            
+
                         Forms\Components\Select::make('property_id')
                             ->label('Propriété')
                             ->relationship('property', 'name')
                             ->required()
                             ->searchable()
                             ->afterStateUpdated(function ($state, callable $set) {
-                                if($state) {
+                                if ($state) {
                                     // On pourrait ajouter un hook pour afficher le prix
                                 }
                             }),
-                            
+
                         Forms\Components\DatePicker::make('start_date')
                             ->label('Date d\'arrivée')
                             ->required()
                             ->minDate(now())
                             ->displayFormat('d/m/Y'),
-                            
+
                         Forms\Components\DatePicker::make('end_date')
                             ->label('Date de départ')
                             ->required()
@@ -73,29 +76,29 @@ class BookingResource extends Resource
                     ->label('Client')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('property.name')
                     ->label('Propriété')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Arrivée')
                     ->date('d/m/Y')
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('end_date')
                     ->label('Départ')
                     ->date('d/m/Y')
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('duration')
                     ->label('Durée')
                     ->getStateUsing(function (Booking $record): string {
                         $nights = \Carbon\Carbon::parse($record->start_date)->diffInDays($record->end_date);
                         return $nights . ' nuit' . ($nights > 1 ? 's' : '');
                     }),
-                    
+
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Prix total')
                     ->getStateUsing(function (Booking $record): string {
@@ -103,7 +106,7 @@ class BookingResource extends Resource
                         $total = $nights * $record->property->price_per_night;
                         return number_format($total, 2) . ' €';
                     }),
-                
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Créé le')
                     ->dateTime('d/m/Y H:i')
@@ -113,14 +116,14 @@ class BookingResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('upcoming')
                     ->label('Réservations à venir')
-                    ->query(fn (Builder $query): Builder => $query->where('start_date', '>=', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('start_date', '>=', now()))
                     ->toggle(),
-                    
+
                 Tables\Filters\Filter::make('past')
                     ->label('Réservations passées')
-                    ->query(fn (Builder $query): Builder => $query->where('end_date', '<', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('end_date', '<', now()))
                     ->toggle(),
-                    
+
                 Tables\Filters\SelectFilter::make('property_id')
                     ->label('Propriété')
                     ->relationship('property', 'name')
