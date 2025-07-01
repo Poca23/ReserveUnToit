@@ -19,6 +19,15 @@ class BookingManager extends Component
         'endDate' => 'required|date|after:startDate',
     ];
     
+    protected $messages = [
+        'startDate.required' => 'La date d\'arrivée est obligatoire.',
+        'startDate.date' => 'La date d\'arrivée doit être une date valide.',
+        'startDate.after_or_equal' => 'La date d\'arrivée ne peut pas être antérieure à aujourd\'hui.',
+        'endDate.required' => 'La date de départ est obligatoire.',
+        'endDate.date' => 'La date de départ doit être une date valide.',
+        'endDate.after' => 'La date de départ doit être postérieure à la date d\'arrivée.',
+    ];
+    
     public function mount(Property $property)
     {
         $this->property = $property;
@@ -42,6 +51,7 @@ class BookingManager extends Component
     public function book()
     {
         if (!Auth::check()) {
+            session()->flash('warning', 'Vous devez être connecté pour effectuer une réservation.');
             return redirect()->route('login');
         }
         
@@ -60,24 +70,29 @@ class BookingManager extends Component
             ->count();
         
         if ($conflictingBookings > 0) {
-            $this->addError('dates', 'Ces dates ne sont pas disponibles.');
+            $this->addError('dates', 'Ces dates ne sont pas disponibles. Veuillez choisir d\'autres dates.');
             return;
         }
         
-        Booking::create([
-            'property_id' => $this->property->id,
-            'user_id' => Auth::id(),
-            'start_date' => $this->startDate,
-            'end_date' => $this->endDate,
-        ]);
-        
-        session()->flash('message', 'Votre réservation a été enregistrée avec succès !');
-        
-        $this->reset(['startDate', 'endDate']);
-        $this->startDate = now()->format('Y-m-d');
-        $this->endDate = now()->addDays(1)->format('Y-m-d');
-        
-        $this->dispatch('booking-created');
+        try {
+            Booking::create([
+                'property_id' => $this->property->id,
+                'user_id' => Auth::id(),
+                'start_date' => $this->startDate,
+                'end_date' => $this->endDate,
+            ]);
+            
+            session()->flash('message', 'Félicitations ! Votre réservation a été confirmée avec succès.');
+            
+            $this->reset(['startDate', 'endDate']);
+            $this->startDate = now()->format('Y-m-d');
+            $this->endDate = now()->addDays(1)->format('Y-m-d');
+            
+            $this->dispatch('booking-created');
+            
+        } catch (\Exception $e) {
+            $this->addError('booking', 'Une erreur est survenue lors de la réservation. Veuillez réessayer.');
+        }
     }
     
     public function render()
