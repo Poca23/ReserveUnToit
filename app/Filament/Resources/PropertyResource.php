@@ -21,6 +21,8 @@ class PropertyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-home';
     
     protected static ?string $navigationLabel = 'Propriétés';
+    
+    protected static ?string $breadcrumb = 'Propriétés';
 
     protected static ?int $navigationSort = 1;
 

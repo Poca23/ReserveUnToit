@@ -9,6 +9,8 @@ use Filament\Resources\Pages\EditRecord;
 class EditProperty extends EditRecord
 {
     protected static string $resource = PropertyResource::class;
+    
+    protected static ?string $title = 'Modifier la Propriété';
 
     protected function getHeaderActions(): array
     {

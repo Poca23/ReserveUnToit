@@ -9,6 +9,8 @@ use Filament\Resources\Pages\ListRecords;
 class ListProperties extends ListRecords
 {
     protected static string $resource = PropertyResource::class;
+    
+    protected static ?string $title = 'Propriétés';
 
     protected function getHeaderActions(): array
     {

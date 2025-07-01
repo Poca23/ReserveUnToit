@@ -9,4 +9,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProperty extends CreateRecord
 {
     protected static string $resource = PropertyResource::class;
+    
+    protected static ?string $title = 'Créer une Propriété';
 }
