@@ -21,8 +21,23 @@ class BookingsChart extends ChartWidget
         $months = [];
         $counts = [];
 
+        $monthsTranslation = [
+            'January' => 'Janvier',
+            'February' => 'Février',
+            'March' => 'Mars',
+            'April' => 'Avril',
+            'May' => 'Mai',
+            'June' => 'Juin',
+            'July' => 'Juillet',
+            'August' => 'Août',
+            'September' => 'Septembre',
+            'October' => 'Octobre',
+            'November' => 'Novembre',
+            'December' => 'Décembre'
+        ];
+
         foreach ($bookings as $month => $booking) {
-            $months[] = $month;
+            $months[] = $monthsTranslation[$month] ?? $month;
             $counts[] = count($booking);
         }
 
