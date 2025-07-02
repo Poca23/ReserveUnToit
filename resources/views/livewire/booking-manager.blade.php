@@ -81,9 +81,10 @@
             <div class="bg-gray-50 p-3 rounded">
                 <div class="flex justify-between items-center font-bold text-lg">
                     <span class="text-gray-700">Total :</span>
-                    <span class="text-primary">{{ number_format($total, 2, ',', ' ') }} €</span>
+                    {{-- ✅ FIX: Utiliser computed property pour mise à jour temps réel --}}
+                    <span class="text-primary">{{ number_format($this->calculatedTotal, 2, ',', ' ') }} €</span>
                 </div>
-                @if($total > 0)
+                @if($this->calculatedTotal > 0)
                     <div class="text-xs text-gray-500 mt-1 flex items-center">
                         <i class="fas fa-info-circle mr-1"></i>
                         {{ number_format($property->price_per_night, 2, ',', ' ') }} € × 

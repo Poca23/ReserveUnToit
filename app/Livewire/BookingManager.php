@@ -35,7 +35,8 @@ class BookingManager extends Component
         $this->endDate = now()->addDays(1)->format('Y-m-d');
     }
     
-    public function calculateTotal()
+    // ✅ FIX: Computed property pour mise à jour automatique
+    public function getCalculatedTotalProperty()
     {
         if (!$this->startDate || !$this->endDate) {
             return 0;
@@ -48,6 +49,12 @@ class BookingManager extends Component
         return $days * $this->property->price_per_night;
     }
     
+    // ✅ Garder méthode originale pour compatibilité
+    public function calculateTotal()
+    {
+        return $this->getCalculatedTotalProperty();
+    }
+    
     public function book()
     {
         if (!Auth::check()) {
@@ -57,7 +64,6 @@ class BookingManager extends Component
         
         $this->validate();
         
-        // Vérifier disponibilité
         $conflictingBookings = Booking::where('property_id', $this->property->id)
             ->where(function($query) {
                 $query->whereBetween('start_date', [$this->startDate, $this->endDate])
@@ -97,8 +103,6 @@ class BookingManager extends Component
     
     public function render()
     {
-        return view('livewire.booking-manager', [
-            'total' => $this->calculateTotal(),
-        ]);
+        return view('livewire.booking-manager');
     }
 }
