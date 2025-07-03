@@ -37,8 +37,7 @@ class Property extends Model
         // Image par défaut libre de droit
         return 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80';
     }
-    
-    // Dans le modèle Property
+
     public function getFormattedDescriptionAttribute()
     {
         return nl2br(e($this->description));
@@ -47,5 +46,19 @@ class Property extends Model
     public function getImagePathDebug()
     {
         return "Image path: " . $this->image . " | Is URL: " . (filter_var($this->image, FILTER_VALIDATE_URL) ? 'Yes' : 'No');
+    }
+
+    public function setDescriptionAttribute($value)
+    {
+        $cleanValue = strip_tags($value);
+
+        $cleanValue = str_replace(["\r\n", "\r"], "\n", $cleanValue);
+
+        $lines = explode("\n", $cleanValue);
+        $lines = array_map('trim', $lines);
+
+        $cleanValue = preg_replace("/\n{3,}/", "\n\n", implode("\n", $lines));
+
+        $this->attributes['description'] = trim($cleanValue);
     }
 }

@@ -22,11 +22,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- Informations propriété -->
                         <div class="lg:col-span-2">
                             <h3 class="text-xl font-semibold mb-4">{{ $booking->property->name }}</h3>
-                            <p class="text-gray-600 mb-6">{{ $booking->property->description }}</p>
-                            
+                            <div class="text-gray-600 mb-6">
+                                {!! $booking->property->formatted_description !!}
+                            </div>                            
                             <div class="border-t pt-6 mt-6">
                                 <h4 class="text-lg font-medium mb-4">Détails de la réservation</h4>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -85,7 +85,6 @@
                         </div>
                     </div>
                     
-                    <!-- Boutons d'action - Placés en bas pour plus de visibilité -->
                     <div class="mt-8 flex flex-wrap gap-3">
                         @if($booking->payment_status !== 'paid')
                             <a href="{{ route('bookings.payment', $booking) }}" 
@@ -130,7 +129,6 @@
         </div>
     </div>
 
-    <!-- Modal de restriction de modification -->
     <div id="editRestrictionModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
@@ -168,7 +166,6 @@
         </div>
     </div>
 
-    <!-- Modal de restriction d'annulation -->
     <div id="cancelRestrictionModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
@@ -239,7 +236,6 @@
                 });
             });
             
-            // Fermer la modale en cliquant à l'extérieur
             window.addEventListener('click', function(e) {
                 if (e.target === editRestrictionModal || e.target === cancelRestrictionModal) {
                     editRestrictionModal.classList.add('hidden');
@@ -247,7 +243,6 @@
                 }
             });
             
-            // Fermer la modale avec la touche Escape
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     editRestrictionModal.classList.add('hidden');

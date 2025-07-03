@@ -22,20 +22,17 @@
                                 <img src="{{ $property->image_url }}" alt="{{ $property->name }}" class="w-full h-full object-cover">
                             </div>
                             <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ $property->name }}</h1>
-                            <!-- Modifié pour afficher correctement le contenu HTML de la description -->
                             <div class="text-gray-600 mb-4 prose max-w-none">
-                                {!! $property->description !!}
+                                {!! $property->formatted_description !!}
                             </div>
                             <div class="text-xl font-bold text-primary mb-6">
                                 {{ number_format($property->price_per_night, 2) }} € / nuit
                             </div>
                             
-                            <!-- Calendrier de disponibilité -->
                             @livewire('availability-calendar', ['property' => $property])
                         </div>
                         
                         <div class="md:col-span-1">
-                            <!-- Module de réservation -->
                             @livewire('booking-manager', ['property' => $property])
                         </div>
                     </div>
