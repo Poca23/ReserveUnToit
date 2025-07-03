@@ -81,7 +81,7 @@
             <div class="bg-gray-50 p-3 rounded">
                 <div class="flex justify-between items-center font-bold text-lg">
                     <span class="text-gray-700">Total :</span>
-                    {{-- ✅ FIX: Utiliser computed property pour mise à jour temps réel --}}
+                    {{-- computed property pour mise à jour temps réel --}}
                     <span class="text-primary">{{ number_format($this->calculatedTotal, 2, ',', ' ') }} €</span>
                 </div>
                 @if($this->calculatedTotal > 0)
